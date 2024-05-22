@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <algorithm>
 
 #define mazeSize 16
 #define forside(sid) for (int sid = 0; sid < mazeSize; sid++) // wonky way for quick maze map traversal
@@ -65,12 +66,18 @@ void recalc() {
     queue.pop(); // remove current
     auto neighs = neighbors(current[0], current[1]); // get neighbors
     for (const auto& neighC : neighs) { // neighC = current neighbor as {row,col}
-      if (neighC[0] < current[0]) maze[neighC].direction = 'n'; // set direction for cell to be used in pathplanning
-        else if (neighC[0] > current[0]) maze[neighC].direction = 's';
-        else if (neighC[1] > current[1]) maze[neighC].direction = 'e';
-        else maze[neighC].direction = 'w';
-      int newDistance = maze[current].distance + 1; // neighbor dist = current dist + 1
+      // if direction of neighbor isn't same as of current, turn costing is there
+      char neighDirection;
+      if (maze[neighC].distance==0) maze[neighC].direction = 'h';
+        else if (neighC[0] < current[0]) neighDirection = 's';
+        else if (neighC[0] > current[0]) neighDirection = 'n';
+        else if (neighC[1] > current[1]) neighDirection = 'w';
+        else neighDirection = 'e';
+      float cost = 1;
+      if (neighDirection==maze[current].direction) cost = 1.5; // turn cost
+      int newDistance = maze[current].distance + cost; // neighbor dist = current dist + cost
       if (newDistance < maze[neighC].distance) {
+        maze[neighC].direction = neighDirection;
         maze[neighC].distance = newDistance;
         queue.push(neighC);
       }
@@ -78,9 +85,32 @@ void recalc() {
   }
 }
 
+std::vector<char> pathfinder(std::array<int,2> starti) {
+  std::vector<char> moves; // list of moves
+  std::array<int, 2> mouseLoc; // virtual 'mouse' reference location [not physical micromouse obvi!]
+  std::array<int, 2> nextLoc = starti;
+  moves.push_back(std::string("snwe")[(std::string("snwe")).find(maze[nextLoc].direction)]);
+  while (mouseLoc!=goal) {
+    mouseLoc = nextLoc;
+    if (mouseLoc==goal) continue;
+    auto neighs = neighbors(mouseLoc[0], mouseLoc[1]); // mouse neighbors
+    auto minNeigh = std::min_element(neighs.begin(), neighs.end(), [&](auto &a, auto &b) {return maze[a].distance < maze[b].distance;} ); // get best neighbor
+    nextLoc = *minNeigh; // best neighbor should be chosen
+    moves.push_back(maze[nextLoc].direction);
 
+    // WHAT YOU NEED TO ADD TO THE MOVES IS THE CURRENT CELL'S DIRECTION, NOT THE NEW NEIGHBOR'S DIRECTION!
+    // ALSO USE THE CURRENT CELL'S [MOUSELOC] DIRECTION TO CHOOSE NEIGHBOR TO TAKE, KINDA! MOSTLY!
+    // THIS SHIT IS, LIKE, WRONG
+    // GET THIS FIXED ASAP AASHI
 
-
+    delay(20); Serial.print("best neighbor of "); delay(20); Serial.print(mouseLoc[0]);
+    delay(20); Serial.print("x"); delay(20); Serial.print(mouseLoc[1]);
+    delay(20); Serial.print(" is "); delay(20); Serial.print(nextLoc[0]);
+    delay(20); Serial.print("x"); delay(20); Serial.print(nextLoc[1]);
+    delay(20); Serial.print(", so i will add "); delay(20); Serial.println(maze[nextLoc].direction);
+  }
+  return moves;
+}
 
 void setup() {
   delay(1000);
@@ -91,13 +121,22 @@ void setup() {
     addWall(each, 0, "w");
     addWall(each, 15, "e");
   }
+  addWall(15, 0, "e");
   recalc(); // this takes 3/1000th of a second!
+  forside(row) {
+    forside(col) {
+      delay(10); Serial.print(maze[{row,col}].direction);
+      if (col!=15) {delay(10); Serial.print(", ");}
+    }
+    Serial.println();
+  }
+  for (const char &move : pathfinder({15,0})) Serial.println(move);
 }
 
-void loop() {} 
+void loop() {}
 
 
 
-// turn weighting is calculated when run is planned, not when reflooded
-// for SOME reason, THIS SHIT doesn't WORK
-
+// btw turn weighting is calculated when run is planned, not when reflooded
+// for a sample error message, use: for SOME reason, THIS SHIT doesn't WORK
+// also go study future aashvik the pathfinder() is perfectly correct and you don't need to mess the lambda up
