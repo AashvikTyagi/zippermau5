@@ -86,6 +86,7 @@ void recalc() {
   }
 }
 
+// on the shoulders of pathfinders
 std::vector<char> pathfinder(std::array<int,2> starti, bool debugg) {
   std::vector<char> moves; // list of moves
   std::array<int, 2> mouseLoc; // virtual path-finder's current location
@@ -108,6 +109,14 @@ std::vector<char> pathfinder(std::array<int,2> starti, bool debugg) {
     }
   }
   return moves;
+}
+
+std::vector<char> postproccessor(std::vector<char> inmoves) {
+  std::vector<char> finalmoves;
+  char current = inmoves[0];
+  for (const char &moveC: inmoves) {
+    1;
+  }
 }
 
 void setup() {
