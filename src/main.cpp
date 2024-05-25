@@ -113,9 +113,11 @@ std::vector<char> pathfinder(std::array<int,2> starti, bool debugg) {
 
 std::vector<char> postproccessor(std::vector<char> inmoves) {
   std::vector<char> finalmoves;
-  char current = inmoves[0];
-  for (const char &moveC: inmoves) {
-    1;
+  char currentState, initialDir = inmoves[0], current = inmoves[0];
+  for (size_t inMoveN; inMoveN<inmoves.size(); inMoveN++) {
+    currentState;
+    // figure out how to maintain state, check if still in same direction, if so add straight, else add turn specific and change state
+    // 90 d turn != 180 d turn for smoothness and starting/ending in the center of the cells
   }
 }
 
