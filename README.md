@@ -8,3 +8,5 @@ it currently uses:
 - dual 1200rpm n20s w/magnetic hall encoder
 - drv8833
 - 25c 3.7v 850mAh lipo
+
+oh, and if anyone wants them, some bits of old and unused code can be found here: https://github.com/AashvikTyagi/slowmau5
