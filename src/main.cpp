@@ -1,7 +1,6 @@
-#include <Arduino.h> // for hardware abstraction
-#include <map> // bunch of stl libs
+#include <Arduino.h>
+#include <map>
 #include <array>
-#include <string>
 #include <queue>
 
 #define NORTH 0 // cardinal constants
@@ -10,12 +9,14 @@
 #define EAST 3
 #define mazeSize 16
 #define forside(sid) for (int sid = 0; sid < mazeSize; sid++) // wonky way to iter over maze
+
 typedef std::array<int, 2> cell_t;
 cell_t goal = {8, 7};
 std::array rowDelta = {-1,1,0,0}, colDelta = {0,0,-1,1}; // used to get the coords of a neighbor in NSWE
+
 std::map<cell_t, uint8_t> maze; // holds walls like maze[{row,col}] : 0b EWSN EWSN
 typedef struct {uint8_t dist; uint8_t dir;} cellData_t; // type for a cell's flood data
-std::map<cell_t, cellData_t> flooded;
+std::map<cell_t, cellData_t> oFlood, cFlood; // to store most recent open and closed flood data
 
 // direction is 0 1 2 3 [from right caus byte] for NSWE
 void addWall(cell_t cell, uint8_t direction, uint8_t mazeType) {
@@ -46,10 +47,12 @@ void setupMaze() {
   addWall({mazeSize-1,0}, EAST, 0);
 }
 
-// floodfill a maze
-void flood(cell_t target, uint8_t mazeType) {
-  forside(row) forside(col) flooded[{row,col}].dist = 255;
-  flooded[target].dist = 0;
+// floodfill a maze and store the results
+void floodMaze(cell_t target, uint8_t mazeType) {
+  auto &floodData = oFlood;
+  if (mazeType) auto &floodData = cFlood;
+  forside(row) forside(col) floodData[{row,col}].dist = 255; // initial distances
+  floodData[target].dist = 0; // target is at a distance of 0u from itself
   std::priority_queue<cell_t> queue;
   queue.push(target);
   while (queue.size()) {
@@ -57,12 +60,12 @@ void flood(cell_t target, uint8_t mazeType) {
     for (uint8_t direction: {NORTH, SOUTH, WEST, EAST}) {
       if (hasExit(currentCell, direction, mazeType)) {
         cell_t nextCell = neighbor(currentCell, direction);
-        uint8_t cost = flooded[currentCell].dist;
-        if ((nextCell[0]==7||nextCell[0]==8)&&(nextCell[1]==7||nextCell[1]==8)) cost = 0;
-        else if (direction!=flooded[currentCell].dir) cost += 2;
+        uint8_t cost = floodData[currentCell].dist;
+        if ((target==goal)&&(nextCell[0]==7||nextCell[0]==8)&&(nextCell[1]==7||nextCell[1]==8)) cost = 0;
+        else if (direction!=floodData[currentCell].dir) cost += 2;
         else cost += 1;
-        if (cost<flooded[nextCell].dist) {
-          flooded[nextCell] = {cost, direction};
+        if (cost<floodData[nextCell].dist) {
+          floodData[nextCell] = {cost, direction};
           queue.push(nextCell);
         }
       }
@@ -73,6 +76,12 @@ void flood(cell_t target, uint8_t mazeType) {
 void setup() {
   delay(1000);
   setupMaze();
+  floodMaze({7,8},0);
+  forside(row) forside(col) {
+    Serial.print(oFlood[{row, col}].dir);
+    if (col!=15) Serial.print(", ");
+    else Serial.println();
+  }
 }
 
 void loop() {}
