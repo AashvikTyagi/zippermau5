@@ -20,20 +20,15 @@ typedef struct {uint8_t dist; uint8_t dir;} cellData_t; // type for a cell's flo
 std::map<cell_t, cellData_t> oFlood, cFlood; // to store most recent open and closed flood data
 
 // direction is 0 1 2 3 [from right caus byte] for NSWE
-// this is actually pretty flawed, since it adds a wall (which, unless on the border, usually has two cells, one on each side) to only one cell? so hasExit has to compensate.
 void addWall(cell_t cell, uint8_t direction, uint8_t mazeType) {
-  maze[cell] |= 1<<(direction+mazeType);
+  if (maze.find(cell)!=maze.end()) maze[cell] |= 1<<(direction+mazeType);
+  cell_t neii = {cell[0]+rowDelta[direction],cell[1]+colDelta[direction]};
+  if (maze.find(neii)!=maze.end()) maze[neii] |= 1<<(oppositeDir[direction]+mazeType);
 }
 
-// check for exit [wonky-looking because it also checks neighbour bEcAuSe addWall(#) iS FlAwEd]
+// check for exit
 bool hasExit(cell_t cell, uint8_t direction, uint8_t mazeType) {
-  cell_t neii = {rowDelta[direction],colDelta[direction]};
-  if ((maze.find(cell)!=maze.end()) && (maze.find(neii)!=maze.end())) return (
-      (maze[cell]&(1<<(direction+mazeType)))==0
-    ) || (
-      (maze[neii]&(1<<(oppositeDir[direction]+mazeType)))==0
-  );
-  else return {};
+  return ((maze[cell]&(1<<(direction+mazeType)))==0);
 }
 
 // get cell_t of neighbor in specific direction
@@ -43,7 +38,6 @@ cell_t neighbor(cell_t current, uint8_t direction) {
   };
 }
 
-// sets definite walls
 void setupMaze() {
   forside(row) forside(col) maze[{row, col}] = 0b11110000;
   forside(each) {
@@ -59,7 +53,6 @@ void setupMaze() {
 void floodMaze(cell_t target, uint8_t mazeType) {
   auto &floodData = oFlood;
   if (mazeType) auto &floodData = cFlood;
-  forside(row) forside(col) floodData[{row,col}].dist = 255; // initial distances
   floodData[target].dist = 0; // target is at a distance of 0u from itself
   std::priority_queue<cell_t> queue;
   queue.push(target);
@@ -84,29 +77,8 @@ void floodMaze(cell_t target, uint8_t mazeType) {
 void setup() {
   delay(1000);
   setupMaze();
-  // floodMaze({7,8},0);
-  // forside(row) forside(col) { Serial.print(oFlood[{row, col}].dir); if (col!=15) Serial.print(", "); else Serial.println(); }
-  forside(row) forside(col) {
-    Serial.print(row);
-    Serial.print('x');
-    Serial.print(col);
-    Serial.print(": ");
-    Serial.print(hasExit({row,col},NORTH,0));
-    Serial.print(", ");
-    Serial.print(hasExit({row,col},SOUTH,0));
-    Serial.print(", ");
-    Serial.print(hasExit({row,col},WEST,0));
-    Serial.print(", ");
-    Serial.println(hasExit({row,col},EAST,0));
-  }
-  /*addWall({0,0}, NORTH, 0);
-  addWall({1,0}, NORTH, 0);
-  addWall({2,0}, NORTH, 0);
-  addWall({14,14}, WEST, 0);
-  Serial.println(hasExit({0,0},NORTH,0));
-  Serial.println(hasExit({0,0},SOUTH,0));
-  Serial.println(hasExit({0,0},WEST,0));
-  Serial.println(hasExit({0,0},EAST,0));*/
+  floodMaze({8,7},0);
+  forside(row) forside(col) { Serial.print(oFlood[{row, col}].dir); if (col!=15) Serial.print(", "); else Serial.println(); }
 }
 
 void loop() {}
