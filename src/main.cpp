@@ -2,8 +2,8 @@
 this is the main file!
 */
 
-#include <Arduino.h>
-#include "solver.cpp"
+// #include <Arduino.h>
+// #include "solver.cpp"
 // #include "hware.cpp"
 
 void setup() {
