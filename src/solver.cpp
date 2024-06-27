@@ -14,10 +14,11 @@ GAME PLAN:
     - run
 */
 
-#include <Arduino.h>
 #include <map>
 #include <array>
 #include <queue>
+
+typedef unsigned char uint8_t;
 
 #define NORTH 0 // cardinal constants
 #define SOUTH 1
