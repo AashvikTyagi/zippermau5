@@ -1,19 +1,3 @@
-/*
-this is the code for solving and handling of the maze!
-
-GAME PLAN:
-  when going through maze:
-    - remove wall from closed maze where gap found
-    - add wall to open maze where wall found
-    - flood open maze for optimistic move
-    - 
-  when reached the goal:
-    - explore (pick other direction)
-  when back to start:
-    - flood closed maze to find best path back
-    - run
-*/
-
 #include <Arduino.h>
 #include <map>
 #include <array>
@@ -94,7 +78,23 @@ void setup() {
   delay(1000);
   setupMaze();
   floodMaze({8,7},0);
-  forside(row) forside(col) { Serial.print(oFlood[{row, col}].dist); if (col!=15) Serial.print(", "); else Serial.println(); }
+  forside(row) forside(col) { Serial.print(oFlood[{row, col}].dir); if (col!=15) Serial.print(", "); else Serial.println(); }
 }
 
 void loop() {}
+
+
+/*
+GAME PLAN:
+  when going through maze:
+    - remove wall from closed maze where gap found
+    - add wall to open maze where wall found
+    - flood open maze for optimistic move
+  when reached the goal:
+    - explore (pick other direction)
+  when back to start:
+    - flood closed maze to find best path back
+    - run
+TO NOTE:
+  - borrow flooding from oldie
+*/
