@@ -1,4 +1,5 @@
-!\[my badge\](https://badgen.net/#badge/completely/bullshit/green?icon=visualstudio)
+[![my badge](https://badgen.net/#badge/completely/bullshit/green?icon=visualstudio)]
+[![pipeline status](https://gitlab.com/veloren/veloren/badges/master/pipeline.svg)](https://gitlab.com/veloren/veloren/-/pipelines
 
 zippermau5 is a wip micromouse robot i'm currently working on
 
