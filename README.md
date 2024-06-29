@@ -1,6 +1,7 @@
-[![my badge](https://badgen.net/#badge/completely/bullshit/green?icon=visualstudio)]
-
-[![pipeline status](https://gitlab.com/veloren/veloren/badges/master/pipeline.svg)](https://gitlab.com/veloren/veloren/-/pipelines
+![badge1](https://badgen.net/badge/completely/bullshit/green?icon=visualstudio)
+![badge2](https://badgen.net/badge/very/wip/orange)
+![badge3](https://badgen.net/badge/nice/micromouse/blue)
+![badge4](https://badgen.net/badge/by/aashvik/cyan)
 
 zippermau5 is a wip micromouse robot i'm currently working on
 
