@@ -1,3 +1,5 @@
+!\[my badge\](https://badgen.net/#badge/completely/bullshit/green?icon=visualstudio)
+
 zippermau5 is a wip micromouse robot i'm currently working on
 
 while i prototype on a breadboard and design the pcb, this is where i store the platformio project files
