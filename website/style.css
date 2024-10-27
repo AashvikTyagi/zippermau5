@@ -1,0 +1,49 @@
+body {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
+    background-color: #ffffff ;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+hr {
+    border: 0;
+    border-top: 2px solid #ff6600;
+}
+
+div.content {
+    width: 85%;
+    padding: 5px;
+    background-color: #f6f6ef;
+}
+
+topp {
+    font-weight: 700;
+}
+
+div.header {
+    font-size: 13.4px;
+    width: 85%;
+    padding: 0px 5px 0px 5px;
+    margin: 0px;
+    color: whitesmoke;
+    background: #ff6600;
+}
+
+a.header {
+    color: whitesmoke;
+}
+
+img {
+    max-width:50%;
+}
+
+
+/*
+orange: #ff6600
+white: #ffffff
+black: #000000
+cream: #f6f6ef
+gray: #828282
+*/
