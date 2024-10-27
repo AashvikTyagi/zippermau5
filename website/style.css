@@ -7,17 +7,6 @@ body {
     align-items: center;
 }
 
-hr {
-    border: 0;
-    border-top: 2px solid #ff6600;
-}
-
-div.content {
-    width: 85%;
-    padding: 5px;
-    background-color: #f6f6ef;
-}
-
 topp {
     font-weight: 700;
 }
@@ -35,8 +24,19 @@ a.header {
     color: whitesmoke;
 }
 
+div.content {
+    width: 85%;
+    padding: 5px;
+    background-color: #f6f6ef;
+}
+
 img {
-    max-width:50%;
+    max-width: 30%;
+}
+
+hr {
+    border: 0;
+    border-top: 2px solid #ff6600;
 }
 
 
