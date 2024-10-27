@@ -5,7 +5,7 @@
 
 _ZIPPERMAU5_ is my WIP micromouse robot!
 
-![Check out the website!](http://aashvik.com/zippermau5)
+[Check out the website!](http://aashvik.com/zippermau5)
 
 This repository contains zippermau5's platformio project files and the zippermau5 website's source.
 
