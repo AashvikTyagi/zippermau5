@@ -1,6 +1,6 @@
-![badge1](https://badgen.net/badge/completely/bullshit/green?icon=visualstudio)
+![badge1](https://badgen.net/badge/thanks/platformio)
 ![badge2](https://badgen.net/badge/very/wip/orange)
-![badge3](https://badgen.net/badge/nice/micromouse/blue)
+![badge3](https://badgen.net/badge/nice/micromouse)
 ![badge4](https://badgen.net/badge/by/aashvik/cyan)
 
 _ZIPPERMAU5_ is my WIP micromouse robot!
@@ -21,6 +21,6 @@ Here's a small list of this micromouse's features:
 - a buzzer, 3 pushbuttons and 3 rgb leds for debugging/interaction
 - a 25c 3.7v 850mAh lipo
 
-![pcb-photos](pcb.png)
+![pcb-photos](images/pcb.png)
 
 Oh, and if anyone wants them, some bits of old and unused code can be found here: https://github.com/AashvikTyagi/slowmau5
