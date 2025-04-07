@@ -97,15 +97,23 @@ void setup() {
 void loop() {}
 
 /*
-  when going through maze:
+when going through maze:
     - remove wall from maze_type maze where gap found
     - add wall to open maze where wall found
     - flood open maze for optimistic move
-  when goal reached:
-    - explore (pick other direction)
-  when back to start:
-    - flood maze_type maze to find best path back
+when goal reached:
+    - maybe explore (pick other direction)
+when back to start:
+    - flood closed maze to find best path back
     - run like z wind
-TO NOTE:
-  - borrow flooding from oldie
+
+from flood to path:
+    - make chain of cardinal directions for next cell to move to eg. NEESNN
+    - turn cardinals into robot-pov ori eg. F-R90-F-F-R90-F-L180-F-F
+    - group F chains together to mark long straight path
+    - maybe simplify movement string
+    - convert movestring into individual motor v with turns and straight path acceleration
+following path:
+    - proportional control loop with dampener value to keep current motor at current pathed speed
+    - error corr... to be written
 */
