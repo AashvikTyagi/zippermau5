@@ -2,16 +2,16 @@
 
 Simple_MPU6050 mpu;
 #define MPU6050_DEFAULT_ADDRESS 0x68
-static unsigned long lastReadTime;
+static unsigned long last_read_time;
 float y,p,r;
-void getRot(int16_t *gyro, int16_t *accel, int32_t *quat);
+void get_rot(int16_t *gyro, int16_t *accel, int32_t *quat);
 
 void setup() {
   mpu.begin();
   mpu.Set_DMP_Output_Rate_Hz(10);
   mpu.CalibrateMPU();
   mpu.load_DMP_Image();
-  mpu.on_FIFO(getRot);
+  mpu.on_FIFO(get_rot);
   Serial.begin(115200);
 }
 
@@ -24,8 +24,8 @@ void loop() {
   delay(100);
 }
 
-// a function called whenever updateGyro is called and gyro data is available
-void getRot(int16_t *gyro, int16_t *accel, int32_t *quat) {
+// a function called whenever update_gyro() is called and gyro data is available
+void get_rot(int16_t *gyro, int16_t *accel, int32_t *quat) {
   Quaternion q;
   VectorFloat gravity;
   float ypr[3] = { 0, 0, 0 };
@@ -39,9 +39,9 @@ void getRot(int16_t *gyro, int16_t *accel, int32_t *quat) {
   r = xyz[2];
 }
 
-void updateGyro() {
+void update_gyro() {
   // if 99 millis have passed since last read and data is available
-  // then data will update and lastReadTime variable will reset
-  if ((millis() - lastReadTime) >= (99))
-    if (mpu.dmp_read_fifo(0)) lastReadTime = millis();
+  // then data will update and last_read_time variable will reset
+  if ((millis() - last_read_time) >= (99))
+    if (mpu.dmp_read_fifo(0)) last_read_time = millis();
 }

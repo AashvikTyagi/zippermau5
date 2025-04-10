@@ -70,8 +70,8 @@ void flood_maze(cell_t target, uint8_t maze_type=0, bool full_size=true) {
         for (uint8_t direction : {NORTH, SOUTH, WEST, EAST}) {
             if (has_exit(current_cell, direction, maze_type)) {
                 cell_t next_cell = neighbor(current_cell, direction);
-                float cost = full_size&&(next_cell[0]==7||next_cell[0]==8)&&(next_cell[1]==7||next_cell[1]==8) ? 0.0f
-                    : flood_data[current_cell].dist + (opposite_dir[direction]!=flood_data[current_cell].dir ? 1.5f : 1.0f);
+                float cost = full_size&&(next_cell[0]==7||next_cell[0]==8)&&(next_cell[1]==7||next_cell[1]==8) ? 0.0
+                    : flood_data[current_cell].dist + (opposite_dir[direction]!=flood_data[current_cell].dir ? 1.5 : 1.0);
                 if (cost<flood_data[next_cell].dist) {
                     flood_data[next_cell] = {cost, opposite_dir[direction]};
                     queue.push(next_cell);
